@@ -1,0 +1,10 @@
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.deps.json
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.csproj.CoreCompileInputs.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.AssemblyInfoInputs.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.AssemblyInfo.cs
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.csprojAssemblyReference.cache

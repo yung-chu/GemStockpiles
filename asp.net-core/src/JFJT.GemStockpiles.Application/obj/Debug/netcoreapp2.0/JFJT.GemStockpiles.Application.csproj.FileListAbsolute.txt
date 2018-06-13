@@ -1,0 +1,12 @@
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\bin\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.deps.json
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\bin\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\bin\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\bin\Debug\netcoreapp2.0\JFJT.GemStockpiles.Core.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\bin\Debug\netcoreapp2.0\JFJT.GemStockpiles.Core.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.csprojResolveAssemblyReference.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.csproj.CoreCompileInputs.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.AssemblyInfoInputs.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.AssemblyInfo.cs
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.csproj.CopyComplete
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Application\obj\Debug\netcoreapp2.0\JFJT.GemStockpiles.Application.pdb

@@ -1,0 +1,17 @@
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.deps.json
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Application.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.EntityFrameworkCore.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Application.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.EntityFrameworkCore.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.EntityFrameworkCore.dll.config
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\bin\Debug\netcoreapp2.1\JFJT.GemStockpiles.Core.pdb
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.csprojAssemblyReference.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.csproj.CoreCompileInputs.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.AssemblyInfoInputs.cache
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.AssemblyInfo.cs
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.csproj.CopyComplete
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.dll
+E:\Project\GemStockpiles\asp.net-core\src\JFJT.GemStockpiles.Web.Core\obj\Debug\netcoreapp2.1\JFJT.GemStockpiles.Web.Core.pdb
