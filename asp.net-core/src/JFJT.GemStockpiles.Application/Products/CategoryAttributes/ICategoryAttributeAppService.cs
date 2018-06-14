@@ -14,7 +14,7 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
         /// 获取属性类型列表
         /// </summary>
         /// <returns></returns>
-        Task<ListResultDto<IdAndNameDto>> GetAllAttributeType();
+        Task<ListResultDto<IdAndNameDto>> GetAllAttributeTypes();
 
         /// <summary>
         /// 获取分类树形结构数据
@@ -28,5 +28,12 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
         /// <param name="Id"></param>
         /// <returns></returns>
         Task<ListResultDto<CategoryAttributeDto>> GetAttr(Guid Id);
+
+        /// <summary>
+        /// 根据ID获取编辑属性信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        Task<CategoryAttributeDto> GetAttributeForEdit(Guid Id);
     }
 }

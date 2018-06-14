@@ -14,7 +14,7 @@
                     </Select> 
                 </FormItem>
                 <FormItem label="积分奖励" prop="point">
-                    <Input v-model="editModel.point" :maxlength="5" number></Input>
+                    <Input v-model="editModel.point" :maxlength="5"></Input>
                 </FormItem>
                 <FormItem prop="isActivity">
                     <Checkbox v-model="editModel.isActivity" size="large">活动兑奖</Checkbox>
@@ -60,7 +60,8 @@ export default {
                     { required: true, type: 'number', message: '请选择积分方案', trigger: 'change' }
                 ],
                 point:[
-                    { required: true, type: 'number', message: '积分奖励不能为空', trigger: 'blur' },
+                    { required: true, message: '积分奖励不能为空', trigger: 'blur' },
+                    { type: 'number', message: '请输入数字', trigger: 'blur', transform(value) {return Number(value);} },
                     { validator: valideMinPoint, trigger: 'blur' }
                 ]
             }

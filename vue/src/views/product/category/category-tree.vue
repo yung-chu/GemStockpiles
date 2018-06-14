@@ -46,10 +46,10 @@ export default {
         },
         async getTreeData(value) {
             let response = await this.$store.dispatch({
-                type: 'attr/getAttrData',
+                type: 'attribute/getAttrData',
                 data: value[0].value
             });
-            this.$store.state.attrDetail.list=[];
+            this.$store.state.attributeItem.list=[];
             
             this.$store.commit('category/setAttrList', response);
             //this.$emit('attrData', response);
@@ -61,7 +61,7 @@ export default {
             });
             //更新Cascader
             await this.$store.dispatch({
-                type: 'category/getCascader'
+                type: 'category/getCascaderCategory'
             });
         }
     },

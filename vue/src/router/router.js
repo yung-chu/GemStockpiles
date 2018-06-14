@@ -82,7 +82,7 @@ export const appRouter = [
         component: main,
         children: [
             { path: 'category', name: 'category', permission: 'Pages.ProductManagement.Categorys', meta: { title: '商品分类' }, component: () => import('@/views/product/category/category.vue') },
-            { path: 'attribute', name: 'attribute', permission: 'Pages.ProductManagement.CategoryAttributes', meta: { title: '分类属性' }, component: () => import('@/views/product/attribute/attr.vue') },
+            { path: 'attribute', name: 'attribute', permission: 'Pages.ProductManagement.CategoryAttributes', meta: { title: '分类属性' }, component: () => import('@/views/product/attribute/attribute.vue') },
             { path: 'product', name: 'product', permission: 'Pages.ProductManagement.Products', meta: { title: '商品列表' }, component: () => import('@/views/product/commodity/product.vue') }
         ]
     },

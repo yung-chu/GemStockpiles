@@ -3,18 +3,18 @@
         <Modal :title="title+'属性'" :value="value" :mask-closable="false" @on-ok="save" @on-visible-change="visibleChange">
             <Form ref="editForm" label-position="top" :rules="rules" :model="editModel">
                 <FormItem label="所属分类" prop="categoryId">
-                    <Cascader :data="categoryCascader" @on-change="categoryCascaderChange" change-on-select filterable></Cascader>
+                    <Cascader :value="selectValue" :data="cascaderCategory" @on-change="cascaderCategoryChange" change-on-select filterable></Cascader>
                 </FormItem>
                 <FormItem label="属性名称" prop="name">
                     <Input v-model="editModel.name" :maxlength="16"></Input>
                 </FormItem>
                 <FormItem label="属性类型" prop="type">
                     <Select v-model="editModel.type" style="width:200px">
-                        <Option v-for="item in attrTypeEnum" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                        <Option v-for="item in attributeTypes" :value="item.id" :key="item.id">{{ item.name }}</Option>
                     </Select> 
                 </FormItem>
                 <FormItem label="排序" prop="sort">
-                    <Input v-model="editModel.sort" :maxlength="8" number style="width:200px"></Input>
+                    <Input v-model="editModel.sort" :maxlength="5" style="width:200px"></Input>
                 </FormItem>
                 <FormItem prop="required">
                     <Checkbox v-model="editModel.required" size="large">是否必须</Checkbox>
@@ -49,6 +49,7 @@ export default {
                 type: '',
                 required: false
             },
+            selectValue: [],
             rules: {
                 categoryId:[
                     { required: true, message: '请选择所属分类', trigger: 'change' }
@@ -60,7 +61,8 @@ export default {
                     { required: true, type: 'number', message: '请选择属性类型', trigger: 'change' }
                 ],
                 sort:[
-                    { required: true, type: 'number', message: '排序不能为空', trigger: 'blur' },
+                    { required: true, type: 'number', message: '排序值不能为空', trigger: 'blur' },
+                    { type: 'number', message: '请输入数字', trigger: 'blur', transform(value) {return Number(value);} },
                     { validator: valideSort, trigger: 'blur' }
                 ],
             }
@@ -69,7 +71,7 @@ export default {
     props: {
         title: {
             type: String,
-            default: "添加"
+            default: '添加'
         },
         value: {
             type: Boolean,
@@ -77,15 +79,15 @@ export default {
         },
     },
     computed: {
-        attrTypeEnum() {
-            return this.$store.state.attr.attrTypeEnum;
+        attributeTypes() {
+            return this.$store.state.attribute.attributeTypes;
         },
-        categoryCascader() {
-            return this.$store.state.category.categoryCascader;
+        cascaderCategory() {
+            return this.$store.state.category.cascaderCategory;
         }
     },
     methods:{
-        categoryCascaderChange(data) {
+        cascaderCategoryChange(data) {
             if (data.length > 0) {
                 this.editModel.categoryId = data[data.length - 1]
             }
@@ -95,17 +97,20 @@ export default {
         },
         visibleChange(value) {
             if(!value) {
+                this.selectValue = [];
                 this.$refs.editForm.resetFields();
                 this.$emit('input', value);
             }
             else {
                 if(this.title == '修改') {
                     let response = this.$store.dispatch({
-                        type:'attr/get',
-                        id:this.$store.state.attr.editAttrId
+                        type:'attribute/getAttributeForEdit',
+                        id:this.$store.state.attribute.editAttributeId
                     }).then((response) => {
                         if(response&&response.data&&response.data.success&&response.data.result) {
-                            this.editModel = Util.extend(true, {}, response.data.result);
+                            var data = response.data.result; 
+                            this.editModel = Util.extend(true, {}, data);
+                            this.selectValue = data.categoryIdPath;
                         }
                         else {
                             this.$Message.error('获取修改数据失败');
@@ -115,6 +120,7 @@ export default {
                     });
                 }
                 else {
+                    this.selectValue = [];
                     //移除ID属性
                     delete this.editModel['id'];
                 }
@@ -125,10 +131,10 @@ export default {
                 if(valid) {
                     let storeType = '';
                     if(this.title == '修改') {
-                        storeType = 'attr/update';        
+                        storeType = 'attribute/update';        
                     }
                     else {
-                        storeType = 'attr/create';        
+                        storeType = 'attribute/create';        
                     }
                     let response = await this.$store.dispatch({
                         type:storeType,
@@ -137,6 +143,7 @@ export default {
                     if (response && response.data && response.data.success) {
                         this.$Message.success(this.title+'成功');
                     }
+                    this.selectValue = [];
                     this.$refs.editForm.resetFields();
                     this.$emit('save-success');
                     this.$emit('input', false);
@@ -144,13 +151,14 @@ export default {
             });
         },
         cancel() {
+            this.selectValue = [];
             this.$refs.editForm.resetFields();
             this.$emit('input', false);
         }
     },
     async created() {
         await this.$store.dispatch({
-            type:'category/getCascader'
+            type:'category/getCascaderCategory'
         });
     }
 }

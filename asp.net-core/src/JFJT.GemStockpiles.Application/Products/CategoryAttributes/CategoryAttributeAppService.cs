@@ -18,6 +18,8 @@ using JFJT.GemStockpiles.Authorization;
 using JFJT.GemStockpiles.Models.Products;
 using JFJT.GemStockpiles.Products.Categorys.Dto;
 using JFJT.GemStockpiles.Products.CategoryAttributes.Dto;
+using Microsoft.EntityFrameworkCore;
+using Abp.Domain.Entities;
 
 namespace JFJT.GemStockpiles.Products.CategoryAttributes
 {
@@ -26,13 +28,17 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
     {
         private readonly IRepository<Category, Guid> _categoryRepository;
         private readonly IRepository<CategoryAttribute, Guid> _categoryAttributRepository;
+        private readonly IRepository<CategoryAttributeItem, Guid> _categoryAttributeItemRepository;
 
-        public CategoryAttributeAppService(IRepository<CategoryAttribute, Guid> categoryAttributRepository,
-            IRepository<Category, Guid> categoryRepository)
+        public CategoryAttributeAppService(
+            IRepository<CategoryAttribute, Guid> categoryAttributRepository,
+            IRepository<Category, Guid> categoryRepository,
+            IRepository<CategoryAttributeItem, Guid> categoryAttributeItemRepository)
          : base(categoryAttributRepository)
         {
             _categoryAttributRepository = categoryAttributRepository;
             _categoryRepository = categoryRepository;
+            _categoryAttributeItemRepository = categoryAttributeItemRepository;
         }
 
         /// <summary>
@@ -45,7 +51,7 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
         {
             CheckCreatePermission();
 
-            CheckErrors(await CheckParAsync(input.Id, input.Name, input.Sort));
+            CheckErrors(await CheckNameOrSortAsync(input.Id, input.CategoryId, input.Name, input.Sort));
 
             var entity = ObjectMapper.Map<CategoryAttribute>(input);
 
@@ -55,10 +61,77 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
         }
 
         /// <summary>
+        /// 修改分类属性
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAuthorize(PermissionNames.Pages_ProductManagement_CategoryAttributes_Edit)]
+        public override async Task<CategoryAttributeDto> Update(CategoryAttributeDto input)
+        {
+            CheckUpdatePermission();
+
+            var entity = await _categoryAttributRepository.GetAsync(input.Id);
+            if (entity == null)
+                throw new EntityNotFoundException(typeof(CategoryAttribute), input.Id);
+
+            CheckErrors(await CheckNameOrSortAsync(input.Id, input.CategoryId, input.Name, input.Sort));
+
+            MapToEntity(input, entity);
+
+            entity = await _categoryAttributRepository.UpdateAsync(entity);
+
+            return MapToEntityDto(entity);
+        }
+
+        /// <summary>
+        /// 删除分类属性
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAuthorize(PermissionNames.Pages_ProductManagement_CategoryAttributes_Delete)]
+        public override async Task Delete(EntityDto<Guid> input)
+        {
+            CheckDeletePermission();
+
+            var entity = await _categoryAttributRepository.GetAsync(input.Id);
+            if (entity == null)
+                throw new EntityNotFoundException(typeof(CategoryAttribute), input.Id);
+
+            await _categoryAttributRepository.DeleteAsync(entity);
+            //删除属性值
+            await _categoryAttributeItemRepository.DeleteAsync(t => t.CategoryAttributeId == input.Id);
+        }
+
+        /// <summary>
+        /// 根据ID获取编辑属性信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<CategoryAttributeDto> GetAttributeForEdit(Guid id)
+        {
+            var entity = await _categoryAttributRepository.FirstOrDefaultAsync(id);
+            if (entity == null)
+                throw new EntityNotFoundException(typeof(CategoryAttribute), id);
+
+            CategoryAttributeDto editAttributeDto = ObjectMapper.Map<CategoryAttributeDto>(entity);
+
+            //获取分类数据
+            var categoryData = _categoryRepository.GetAll().ToList();
+
+            //设置属性分类信息
+            var model = HandleCategoryInfo(categoryData, new CategoryAttributeDto() { CategoryId = entity.CategoryId });
+            editAttributeDto.CategoryName = categoryData.Find(t => t.Id == entity.CategoryId)?.Name;
+            editAttributeDto.CategoryNamePath = model.CategoryNamePath;
+            editAttributeDto.CategoryIdPath = model.CategoryIdPath;
+
+            return editAttributeDto;
+        }
+
+        /// <summary>
         /// 获取属性类型列表
         /// </summary>
         /// <returns></returns>
-        public Task<ListResultDto<IdAndNameDto>> GetAllAttributeType()
+        public Task<ListResultDto<IdAndNameDto>> GetAllAttributeTypes()
         {
             List<IdAndNameDto> attributeTypes = new List<IdAndNameDto>();
 
@@ -162,6 +235,16 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
         }
 
         /// <summary>
+        /// Dto模型映射
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="pointRank"></param>
+        protected override void MapToEntity(CategoryAttributeDto input, CategoryAttribute categoryAttribute)
+        {
+            ObjectMapper.Map(input, categoryAttribute);
+        }
+
+        /// <summary>
         /// GetAll查询过滤条件
         /// </summary>
         /// <param name="input"></param>
@@ -186,21 +269,22 @@ namespace JFJT.GemStockpiles.Products.CategoryAttributes
         /// 检测分类属性名称或属性排序值是否已存在
         /// </summary>
         /// <param name="expectedId"></param>
+        /// <param name="categoryId"></param>
         /// <param name="name"></param>
         /// <param name="sort"></param>
         /// <returns></returns>
-        protected async Task<IdentityResult> CheckParAsync(Guid? expectedId, string name, int sort)
+        protected async Task<IdentityResult> CheckNameOrSortAsync(Guid? expectedId, Guid categoryId, string name, int sort)
         {
-            var entity = await _categoryAttributRepository.FirstOrDefaultAsync(b => b.Name == name);
+            var entity = await _categoryAttributRepository.FirstOrDefaultAsync(b => b.CategoryId == categoryId && b.Name == name);
             if (entity != null && entity.Id != expectedId)
             {
-                throw new UserFriendlyException(name + " 属性名称已存在");
+                throw new UserFriendlyException("属性名称已存在");
             }
 
-            entity = await _categoryAttributRepository.FirstOrDefaultAsync(b => b.Sort == sort);
+            entity = await _categoryAttributRepository.FirstOrDefaultAsync(b => b.CategoryId == categoryId && b.Sort == sort);
             if (entity != null && entity.Id != expectedId)
             {
-                throw new UserFriendlyException(sort + "排序值已存在");
+                throw new UserFriendlyException("排序值已存在");
             }
 
             return IdentityResult.Success;

@@ -1,6 +1,6 @@
 import Ajax from '@/libs/ajax';
 
-const attr={
+const attribute = {
     namespaced: true,
     state: {
         totalCount: 0,
@@ -8,8 +8,8 @@ const attr={
         pageSize: 10,
         list: [],
         loading: false,
-        editAttrId: 0,
-        attrTypeEnum: []
+        editAttributeId: 0,
+        attributeTypes: []
     },
     mutations: {
         setCurrentPage(state, page) {
@@ -19,14 +19,14 @@ const attr={
             state.pageSize = pageSize;
         },
         edit(state, id) {
-            state.editAttrId = id;
+            state.editAttributeId = id;
         }
     },
     actions: {
         async getAll(context, payload) {
             context.state.loading = true;
-            if(context.state.attrTypeEnum.length <= 0) {
-                await context.dispatch('getAllAttrTypeEnum');
+            if(context.state.attributeTypes.length <= 0) {
+                await context.dispatch('getAllAttributeTypes');
             }
             let response = await Ajax.get('/api/services/app/CategoryAttribute/GetAll', {params: payload.data});
             context.state.loading = false;
@@ -34,12 +34,15 @@ const attr={
             context.state.totalCount = page.totalCount;
             context.state.list = page.items;
         },
-        async getAllAttrTypeEnum(context) {
-            let response = await Ajax.get('/api/services/app/CategoryAttribute/GetAllAttributeType');
-            context.state.attrTypeEnum = response.data.result.items;
+        async getAllAttributeTypes(context) {
+            let response = await Ajax.get('/api/services/app/CategoryAttribute/GetAllAttributeTypes');
+            context.state.attributeTypes = response.data.result.items;
         },
         async get(context, payload) {
             return await Ajax.get('/api/services/app/CategoryAttribute/Get?Id=' + payload.id);
+        },
+        async getAttributeForEdit(context, payload) {
+            return await Ajax.get('/api/services/app/CategoryAttribute/GetAttributeForEdit?Id=' + payload.id);
         },
         async create(context, payload) {
             return await Ajax.post('/api/services/app/CategoryAttribute/Create', payload.data);
@@ -57,4 +60,4 @@ const attr={
     }
 }
 
-export default attr;
+export default attribute;

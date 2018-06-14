@@ -2,13 +2,11 @@
     <div>
         <Modal :title="title+'属性值'" :value="value" :mask-closable="false" @on-ok="save" @on-visible-change="visibleChange">
             <Form ref="editForm" label-position="top" :rules="rules" :model="editModel">
-                <FormItem label="所属属性" prop="attributeId">
-                    <Select v-model="editModel.attributeId">
-                        <Option v-for="item in allAttrList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                    </Select>
-                </FormItem>
                 <FormItem label="属性值" prop="value">
                     <Input v-model="editModel.value" :maxlength="16"></Input>
+                </FormItem>
+                <FormItem label="排序" prop="sort">
+                    <Input v-model="editModel.sort" :maxlength="5" style="width:200px"></Input>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -24,14 +22,29 @@ import Util from '@/libs/util.js';
 
 export default {
     data() {
+        const valideSort = (rule, value, callback) => {
+            var regex = /^([1-9]\d*?)$/;
+            if (!regex.test(value)) {
+                callback(new Error('请输入大于0的整数'));
+            } else {
+                callback();
+            }
+        };
         return {
             editModel: {
+                categoryAttributeId: '',
                 value: '',
-                attributeId: ''
+                sort: ''
             },
             rules: {
-                attributeId:[{ required: true, message: '请选择所属属性', trigger: 'change' }],
-                value: [{ required: true, message: '属性值不能为空', trigger: 'blur' }]
+                value: [
+                    { required: true, message: '属性值不能为空', trigger: 'blur' }
+                ],
+                sort:[
+                    { required: true, type: 'number', message: '排序值不能为空', trigger: 'blur' },
+                    { type: 'number', message: '请输入数字', trigger: 'blur', transform(value) {return Number(value);} },
+                    { validator: valideSort, trigger: 'blur' }
+                ],
             }
         }
     },
@@ -45,11 +58,6 @@ export default {
             default: false
         }
     },
-    computed: {
-        allAttrList() {
-            return this.$store.state.attrDetail.allAttrList;
-        }
-    },
     methods: {
         visibleChange(value) {
             if (!value) {
@@ -59,8 +67,8 @@ export default {
             else {
                 if (this.title == '修改') {
                     let response = this.$store.dispatch({
-                        type: 'attrDetail/get',
-                        id: this.$store.state.attrDetail.editAttrDetailId
+                        type: 'attributeItem/get',
+                        id: this.$store.state.attributeItem.editAttributeItemId
                     }).then((response) => {
                         if (response && response.data && response.data.success && response.data.result) {
                             this.editModel = Util.extend(true, {}, response.data.result);
@@ -73,6 +81,8 @@ export default {
                     });
                 }
                 else {
+                    //设置当前属性ID
+                    this.editModel.categoryAttributeId = this.$store.state.attributeItem.currentAttributeId;
                     //移除ID属性
                     delete this.editModel['id'];
                 }
@@ -83,10 +93,10 @@ export default {
                 if (valid) {
                     let storeType = '';
                     if (this.title == '修改') {
-                        storeType = 'attrDetail/update';
+                        storeType = 'attributeItem/update';
                     }
                     else {
-                        storeType = 'attrDetail/create';
+                        storeType = 'attributeItem/create';
                     }
                     let response = await this.$store.dispatch({
                         type: storeType,
@@ -105,11 +115,6 @@ export default {
             this.$refs.editForm.resetFields();
             this.$emit('input', false);
         }
-    },
-    async created() {
-        await this.$store.dispatch({
-            type: 'attrDetail/getAllAttr'
-        });
     }
 }
 </script>

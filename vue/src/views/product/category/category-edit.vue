@@ -3,13 +3,13 @@
         <Modal title="添加分类" :value="value" :mask-closable="false" @on-ok="save" @on-visible-change="visibleChange">
             <Form ref="categoryForm" label-position="top" :rules="rules" :model="categoryModel">
                 <FormItem label="分类" prop="parentId">
-                    <Cascader v-model="categoryModel.parentId" :data="getCascader" filterable change-on-select></Cascader>
+                    <Cascader v-model="categoryModel.parentId" :data="cascaderCategory" filterable change-on-select></Cascader>
                 </FormItem>
                 <FormItem label="分类名" prop="name">
                     <Input v-model="categoryModel.name" :maxlength="20" :minlength="1"></Input>
                 </FormItem>
                 <FormItem label="排序" prop="sort">
-                    <Input v-model="categoryModel.sort" :maxlength="5" :minlength="1" number></Input>
+                    <Input v-model="categoryModel.sort" :maxlength="5" :minlength="1"></Input>
                 </FormItem>
                 <FormItem label="备注" prop="remark">
                     <Input v-model="categoryModel.remark" :maxlength="255"></Input>
@@ -49,6 +49,7 @@ export default {
                 ],
                 sort: [
                     { required: true, type: 'number', message: '排序值不能为空', trigger: 'blur' },
+                    { type: 'number', message: '请输入数字', trigger: 'blur', transform(value) {return Number(value);} },
                     { validator: valideSort, trigger: 'blur' }
                 ]
             }
@@ -61,8 +62,8 @@ export default {
         }
     },
     computed: {
-        getCascader() {
-            return this.$store.state.category.categoryCascader;
+        cascaderCategory() {
+            return this.$store.state.category.cascaderCategory;
         }
     },
     methods: {
@@ -104,7 +105,7 @@ export default {
     },
     async created() {
         await this.$store.dispatch({
-            type: 'category/getCascader'
+            type: 'category/getCascaderCategory'
         });
     }
 };

@@ -27,7 +27,7 @@
                                     属性数据
                                 </div>
                                 <div class="margin-top-10">
-                                    <Table :columns="columns" border :data="attrList" @on-row-click="attrDetailData"></Table>
+                                    <Table :columns="columns" border :data="attrList" @on-row-click="attributeItemData"></Table>
                                 </div>
                             </Card>
                         </Col>
@@ -62,7 +62,7 @@ export default {
             return this.$store.state.category.selectAttrList;
         },
         detailList() {
-            return this.$store.state.attrDetail.list;
+            return this.$store.state.attributeItem.list;
         }
     },
     data() {
@@ -80,11 +80,14 @@ export default {
             },{
                 title: '属性名称',
                 key: "name"
-            },
-            {
+            },{
+                title: '排序',
+                key: 'sort',
+                width: 70
+            },{
                 title: '操作',
                 key: 'Actions',
-                width: 160,
+                width: 95,
                 render: (h, params) => {
                     return h('div', [
                         h('Button', {
@@ -103,14 +106,14 @@ export default {
                                         cancelText: '取消',
                                         onOk: async () => {
                                             let response = await this.$store.dispatch({
-                                                type: 'attr/delete',
+                                                type: 'attribute/delete',
                                                 data: params.row
                                             });
 
                                             if (response && response.data && response.data.success) {
                                                 this.$Message.success('删除成功');
                                                 let response = await this.$store.dispatch({
-                                                    type: 'attr/getAttrData',
+                                                    type: 'attribute/getAttrData',
                                                     data: params.row.categoryId
                                                 });
                                                 this.$store.commit('category/setAttrList', response);
@@ -131,11 +134,14 @@ export default {
             },{
                 title: '属性值',
                 key: "value"
-            },
-            {
+            },{
+                title: '排序',
+                key: 'sort',
+                width: 70
+            },{
                 title: '操作',
                 key: 'Actions',
-                width: 160,
+                width: 95,
                 render: (h, params) => {
                     return h('div', [
                         h('Button', {
@@ -154,20 +160,11 @@ export default {
                                         cancelText: '取消',
                                         onOk: async () => {
                                             let response = await this.$store.dispatch({
-                                                type: 'attrDetail/delete',
+                                                type: 'attributeItem/delete',
                                                 data: params.row
                                             });
                                             if (response && response.data && response.data.success) {
                                                 this.$Message.success('删除成功');
-
-
-
-                                                await this.$store.dispatch({
-                                                    type: 'attrDetail/get'
-                                                });
-
-
-                                                
                                             }
                                         }
                                     });
@@ -181,9 +178,9 @@ export default {
         }
     },
     methods: {
-        async attrDetailData(value){
+        async attributeItemData(value) {
             await this.$store.dispatch({
-                type: 'attrDetail/getAttr',
+                type: 'attributeItem/getCategoryAttributeItems',
                 data: value
             });
         }

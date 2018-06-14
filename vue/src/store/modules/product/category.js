@@ -11,7 +11,7 @@ const category={
         loading: false,
         editUser: null,
         categoryTree:[],
-        categoryCascader:[],
+        cascaderCategory:[],
         selectAttrList:[]
     },
     mutations: {
@@ -49,10 +49,10 @@ const category={
             let response = await Ajax.get('/api/services/app/Category/GetTreeCategory');
             context.state.categoryTree = response.data.result.items;
         },
-        async getCascader(context) {
+        async getCascaderCategory(context) {
             let response = await Ajax.get('/api/services/app/Category/GetCascaderCategory');
             // 删除空children节点
-            context.state.categoryCascader = Util.removeNullChildrenNode(response.data.result.items);
+            context.state.cascaderCategory = Util.removeNullChildrenNode(response.data.result.items);
         },
         async create(context, payload) {
             return await Ajax.post('/api/services/app/Category/Create', payload.data);

@@ -6,26 +6,16 @@
 
 <template>
     <div>
-        <Modal :title="title+'属性数据'" :value="value" :mask-closable="false" @on-ok="save" @on-visible-change="visibleChange" width="45%">
+        <Modal :title="title+'属性数据'" :value="value" :mask-closable="false" @on-ok="save" @on-visible-change="visibleChange" width="35%">
             <Form ref="editForm" :label-width="80"  :rules="rules" :model="editModel" inline>
                 <FormItem label="商品名称" prop="name">
                     <Input v-model="editModel.name"></Input>
                 </FormItem>
-                <FormItem label="所属分类" prop="name">
-              
-                    <select></select>
-                </FormItem>
-                <FormItem label="图片" prop="name">
-                    <Input v-model="editModel.name"></Input>
-                </FormItem>
-                <FormItem label="视频" prop="name">
-                    <Input v-model="editModel.name"></Input>
-                </FormItem>
-                <FormItem label="名称" prop="name">
-                    <Input v-model="editModel.name"></Input>
-                </FormItem>
                 <FormItem label="数量" prop="name">
                     <Input v-model="editModel.name"></Input>
+                </FormItem>
+                <FormItem label="所属分类" prop="name">
+                    <Cascader :value="selectValue" :data="cascaderCategory" @on-change="cascaderCategoryChange" change-on-select filterable></Cascader>
                 </FormItem>
                 <FormItem label="价格" prop="name">
                     <Input v-model="editModel.name"></Input>
@@ -33,13 +23,19 @@
                 <FormItem label="证书号 " prop="name">
                     <Input v-model="editModel.name"></Input>
                 </FormItem>
+                <FormItem label="卖家" prop="name">
+                    <Input v-model="editModel.name"></Input>
+                </FormItem>
                 <FormItem label="产品编号" prop="name">
                     <Input v-model="editModel.name"></Input>
                 </FormItem>
-                <FormItem label="产品说明" prop="name">
+                <FormItem label="图片" prop="name" width="55%">
                     <Input v-model="editModel.name"></Input>
                 </FormItem>
-                <FormItem label="卖家" prop="name">
+                <FormItem label="视频" prop="name"  width="55%">
+                    <Input v-model="editModel.name"></Input>
+                </FormItem>
+                <FormItem label="产品说明" prop="name">
                     <Input v-model="editModel.name"></Input>
                 </FormItem>
             </Form>
@@ -66,9 +62,13 @@ export default {
         };
         return {
             editModel: {
+                categoryId:'',
                 name: ''
             },
             rules: {
+                categoryId:[
+                    { required: true, message: '请选择所属分类', trigger: 'change' }
+                ],
                 name: [
                     { required: true, message: '属性名称不能为空', trigger: 'blur' }
                 ]
@@ -85,7 +85,20 @@ export default {
             default: false
         },
     },
+    computed: {
+        cascaderCategory() {
+            return this.$store.state.category.cascaderCategory;
+        }
+    },
     methods: {
+        cascaderCategoryChange(data) {
+            if (data.length > 0) {
+                this.editModel.categoryId = data[data.length - 1]
+            }
+            else {
+                this.editModel.categoryId = '';
+            }
+        },
         visibleChange(value) {
             if (!value) {
                 this.$refs.editForm.resetFields();
@@ -93,20 +106,7 @@ export default {
             }
             else {
                 if (this.title == '修改') {
-                    // let response = this.$store.dispatch({
-                    //     type:'attr/get',
-                    //     id:this.$store.state.attr.editAttrId
-                    // }).then((response) => {
-                    //     if(response&&response.data&&response.data.success&&response.data.result) {
-
-                    //         this.editModel = Util.extend(true, {}, response.data.result);
-                    //     }
-                    //     else {
-                    //         this.$Message.error('获取修改数据失败');
-                    //     }
-                    // }).catch((error) => {
-                    //     setTimeout(() => {this.$emit('input', false);}, 1500);
-                    // });
+                    //
                 }
                 else {
                     //移除ID属性
@@ -120,6 +120,11 @@ export default {
             this.$refs.editForm.resetFields();
             this.$emit('input', false);
         }
+    },
+    async created() {
+        await this.$store.dispatch({
+            type:'category/getCascaderCategory'
+        });
     }
 }
 </script>
